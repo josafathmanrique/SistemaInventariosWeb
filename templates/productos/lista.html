@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="grid-header">
+        <div class="stat-card">
+            <div class="stat-title">Total Productos</div>
+            <div class="stat-value">{{ productos|length }}</div>
+        </div>
+        <div class="stat-card" style="border-color: #10b981;">
+            <div class="stat-title">Sistema Activo</div>
+            <div class="stat-value" style="font-size: 1rem; color: #10b981;">En Línea ●</div>
+        </div>
+         <a href="{{ url_for('ver_alertas') }}" class="stat-card" style="border-color: #f59e0b; text-decoration: none; display: block;">
+            <div class="stat-title" style="color: #d97706;"> Centro de Alertas</div>
+            <div class="stat-value" style="font-size: 1rem; color: #d97706;">Ver Reporte &rarr;</div>
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="flex-between">
+            <div>
+                <h2 style="margin:0;">Inventario General</h2>
+                <p style="color: var(--text-muted); margin: 5px 0 0 0; font-size: 0.9rem;">Gestiona tu catálogo y stock disponible</p>
+            </div>
+            <div>
+                <a href="{{ url_for('nuevo_producto') }}" class="btn btn-primary">+ Nuevo Producto</a>
+            </div>
+        </div>
+
+        <form action="{{ url_for('listar_productos') }}" method="get" style="background: #f9fafb; padding: 15px; border-radius: 8px; display:flex; gap:10px; border: 1px solid #e5e7eb; margin-bottom: 25px;">
+            <input type="text" name="q" placeholder="🔍 Buscar por nombre..." value="{{ request.args.get('q', '') }}" style="margin:0; border:none; background:transparent; font-size:0.95rem;">
+            <button type="submit" class="btn btn-primary" style="padding: 8px 15px;">Buscar</button>
+            {% if request.args.get('q') %}
+                <a href="{{ url_for('listar_productos') }}" class="btn btn-danger" style="padding: 8px 15px;">Limpiar</a>
+            {% endif %}
+        </form>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Ubicación</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in productos %}
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600;">{{ p.nombre }}</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">{{ p.descripcion }}</div>
+                        </td>
+                        <td><span class="badge" style="background:#eff6ff; color:#1e40af;">{{ p.categoria }}</span></td>
+                        <td>{{ p.codigo_ubicacion }}</td>
+                        <td style="font-family: monospace; font-weight: 600;">${{ p.precio_unitario }}</td>
+                        <td>
+                            {% if p.stock_actual <= p.stock_minimo %}
+                                <span class="badge bg-red">🔻 {{ p.stock_actual }} (Bajo)</span>
+                            {% else %}
+                                <span class="badge bg-green">✔ {{ p.stock_actual }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <a href="{{ url_for('registrar_entrada') }}" class="btn btn-success" style="padding: 5px 10px; font-size: 0.8rem;">+ Entrar</a>
+                                <a href="{{ url_for('registrar_salida') }}" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;">- Salir</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

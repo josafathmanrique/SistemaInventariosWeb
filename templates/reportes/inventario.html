@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="flex-between">
+        <div>
+            <h1 style="margin:0; color: #1f2937;">📋 Reporte de Inventario Físico</h1>
+            <p style="color: #6b7280; margin: 5px 0 0 0;">Listado de existencias por ubicación</p>
+        </div>
+        <button onclick="window.print()" class="btn btn-primary" style="background: #4b5563;">
+             Imprimir Listado
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ubicación</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Stock Sistema</th>
+                    <th>Verificación (Físico)</th> </tr>
+            </thead>
+            <tbody>
+                {% for item in datos %}
+                <tr>
+                    <td>
+                        <span class="badge" style="background: #e0e7ff; color: #3730a3;">{{ item.codigo_ubicacion }}</span>
+                        <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">{{ item.ubicacion_desc }}</div>
+                    </td>
+                    <td>
+                        <strong>{{ item.nombre }}</strong>
+                    </td>
+                    <td>{{ item.categoria }}</td>
+                    <td style="font-weight: bold; font-size: 1.1rem;">{{ item.stock_actual }}</td>
+                    <td style="border-bottom: 1px solid #e5e7eb;">
+                        <div style="width: 100px; height: 25px; border-bottom: 1px solid #9ca3af;"></div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

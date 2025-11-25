@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: start;">
+
+    <div class="card" style="position: sticky; top: 100px;">
+        <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+            <div style="background: #e0e7ff; padding: 8px; border-radius: 50%; color: #4f46e5;">🏷️</div>
+            <h2 style="margin: 0; font-size: 1.2rem;">Nueva Categoría</h2>
+        </div>
+        
+        <form method="post">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" placeholder="Ej: Muebles, Limpieza..." required>
+
+            <label for="descripcion">Descripción</label>
+            <textarea name="descripcion" placeholder="Breve descripción..." rows="3"></textarea>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                Guardar Categoría
+            </button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px;">Categorías Existentes</h2>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in categorias %}
+                    <tr>
+                        <td style="color: #9ca3af;">#{{ c.id_categoria }}</td>
+                        <td><span class="badge" style="background: #f3f4f6; color: #374151; font-size: 0.9rem;">{{ c.nombre }}</span></td>
+                        <td style="color: #6b7280; font-size: 0.9rem;">{{ c.descripcion }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

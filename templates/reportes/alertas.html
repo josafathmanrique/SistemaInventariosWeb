@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="border-top: 4px solid #f59e0b;">
+    <div class="flex-between">
+        <div>
+            <h1 style="margin:0; display: flex; align-items: center; gap: 10px; font-size: 1.5rem;">
+                 Alertas de Stock
+            </h1>
+            <p style="color: var(--text-muted); margin: 5px 0 0 0;">Productos que requieren reabastecimiento urgente</p>
+        </div>
+    </div>
+
+    {% if alertas %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Stock Actual</th>
+                    <th>Mínimo Requerido</th>
+                    <th>Déficit</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in alertas %}
+                <tr style="background: #fffbeb;"> <td>
+                        <strong>{{ p.nombre }}</strong><br>
+                        <small>{{ p.categoria }}</small>
+                    </td>
+                    <td style="color: #dc2626; font-weight: bold;">{{ p.stock_actual }}</td>
+                    <td>{{ p.stock_minimo }}</td>
+                    <td><span class="badge bg-red">Faltan {{ p.stock_minimo - p.stock_actual }}</span></td>
+                    <td>
+                        <a href="{{ url_for('registrar_entrada') }}" class="btn btn-success" style="padding: 6px 12px; font-size: 0.8rem;">
+                            ⚡ Reponer
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div style="text-align:center; padding: 40px; color: var(--text-muted);">
+            <div style="font-size: 3rem; margin-bottom: 10px;">✅</div>
+            <h3>Todo bajo control</h3>
+            <p>No hay productos con stock crítico en este momento.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top: 10px;">Volver al Inventario</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

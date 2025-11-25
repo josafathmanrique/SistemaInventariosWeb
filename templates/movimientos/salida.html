@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+
+    <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <div style="background: #fee2e2; padding: 10px; border-radius: 50%; color: #991b1b; font-size: 1.5rem;">📤</div>
+        <div>
+            <h1 style="margin: 0; font-size: 1.5rem; color: #1f2937;">Registrar Salida</h1>
+            <p style="margin: 0; color: #6b7280;">Descontar inventario (Ventas o Mermas)</p>
+        </div>
+    </div>
+
+    {% if error %}
+    <div style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <strong> Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="card" style="border-top: 4px solid #ef4444;">
+        <form method="post">
+            <label for="id_producto">Seleccionar Producto</label>
+            <select name="id_producto" required style="font-size: 1rem;">
+                {% for p in productos %}
+                    <option value="{{ p.id_producto }}">
+                        {{ p.nombre }} (Disponible: {{ p.stock_actual }})
+                    </option>
+                {% endfor %}
+            </select>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label for="cantidad">Cantidad a Retirar</label>
+                    <input type="number" name="cantidad" min="1" required placeholder="Ej: 5" style="font-size: 1.1rem; font-weight: bold; color: #dc2626;">
+                </div>
+                <div>
+                    <label for="usuario_display">Usuario Responsable</label>
+                    <input type="text" id="usuario_display" value="{{ session.get('user_name', 'Admin') }}" disabled style="background: #f3f4f6;">
+                    <input type="hidden" name="id_usuario" value="{{ session.get('user_id', 1) }}">
+                </div>
+            </div>
+
+            <label for="motivo">Motivo / Destino</label>
+            <textarea name="motivo" placeholder="Ej: Venta Ticket #901..." required rows="3"></textarea>
+
+            <button type="submit" class="btn btn-danger" style="width: 100%; justify-content: center; padding: 15px; font-size: 1.1rem; margin-top: 10px;">
+                 Confirmar Salida
+            </button>
+        </form>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="{{ url_for('listar_productos') }}" style="color: #6b7280; text-decoration: none; font-size: 0.9rem;">&larr; Cancelar y volver</a>
+    </div>
+</div>
+{% endblock %}

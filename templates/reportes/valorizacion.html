@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="flex-between">
+        <div>
+            <h1 style="margin:0; color: #1f2937;"> Valorización de Inventario</h1>
+            <p style="color: #6b7280; margin: 5px 0 0 0;">Reporte financiero del stock actual</p>
+        </div>
+        <div style="background: #1f2937; color: white; padding: 15px 25px; border-radius: 8px; text-align: right;">
+            <div style="font-size: 0.8rem; text-transform: uppercase; opacity: 0.8;">Valor Total Almacén</div>
+            <div style="font-size: 1.8rem; font-weight: bold;">${{ "{:,.2f}".format(gran_total) }}</div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Costo Unitario</th>
+                    <th>Stock</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in datos %}
+                <tr>
+                    <td><strong>{{ item.nombre }}</strong></td>
+                    <td>${{ "{:,.2f}".format(item.precio_unitario) }}</td>
+                    <td>{{ item.stock_actual }}</td>
+                    <td style="font-weight: bold; color: #1f2937;">${{ "{:,.2f}".format(item.subtotal) }}</td>
+                </tr>
+                {% endfor %}
+                <tr style="background-color: #f9fafb; border-top: 2px solid #e5e7eb;">
+                    <td colspan="3" style="text-align: right; font-weight: bold; padding-right: 20px;">TOTAL GENERAL:</td>
+                    <td style="font-weight: bold; color: #1f2937; font-size: 1.1rem;">${{ "{:,.2f}".format(gran_total) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 20px; text-align: right;">
+        <button onclick="window.print()" class="btn btn-primary" style="background: #4b5563;">🖨️ Imprimir Reporte</button>
+    </div>
+</div>
+{% endblock %}
